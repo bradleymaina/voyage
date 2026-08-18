@@ -8,5 +8,5 @@ version = "0.1.0"
 description = "version control but for tasks , projects , books and goals"
 requires-python = ">= 3.11"
 
-[projects.scripts]
+[project.scripts]
 voy = "voyage.cli:main"
