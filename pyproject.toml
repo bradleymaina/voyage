@@ -1,0 +1,8 @@
+[build-system]
+requirs =  ["setuptools"]
+build-backend = "setuptools.build-meta"
+
+[project]
+name =  "voyage"
+version = "0.1.0"
+description = "version control but for tasks , projects , books and goals"
