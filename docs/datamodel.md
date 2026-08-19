@@ -1,8 +1,3 @@
-Yes — you want **one continuous Markdown file**, starting from `# Voyage Data Model` and containing **all sections from Project through Summary**, not separate pieces.
-
-Copy this entire block into `data-model.md`:
-
-````md
 # Voyage Data Model
 
 ## 1. Overview
