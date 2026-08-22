@@ -8,7 +8,7 @@ class Task:
     title: str
     status: str
     created_at: datetime
-    updated_at: datetime
+    completed_at: datetime | None
 
 @dataclass
 class Book:
@@ -17,7 +17,7 @@ class Book:
     total_pages: int
     current_page: int
     started_at: datetime
-    updated_at: datetime
+    completed_at: datetime | None
 
 
     def get_progress(self) -> float:
@@ -31,4 +31,4 @@ class Goal:
     title: str
     stages: list
     deadline: datetime
-    started_at: datetime
+    started_at: datetime | None
