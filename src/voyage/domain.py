@@ -8,7 +8,14 @@ class Task:
     title: str
     status: str
     created_at: datetime
-    completed_at: datetime | None
+    completed_at: datetime | None = None
+
+    def dock(self):
+        self.status = "complete"
+        self.completed_at = datetime.now()
+
+    def maroon(self):
+        self.status = "maroon"
 
 @dataclass
 class Book:
@@ -24,6 +31,9 @@ class Book:
         """get book progress"""
         if self.total_pages != 0:
             return self.current_page / self.total_pages * 100
+
+    def dock(self):
+        self.
 
 
 @dataclass
