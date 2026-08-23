@@ -24,17 +24,20 @@ class Book:
     total_pages: int
     current_page: int
     started_at: datetime
-    completed_at: datetime | None
+    updated_at: datetime | None
 
+    def  update_page(self, page: int):
+        if page < 0 or page > self.total_pages:
+            raise ValueError("Invalid Page!")
 
+        self.current_page = page
+        self.updated_at = datetime.now()
+
+         
     def get_progress(self) -> float:
         """get book progress"""
         if self.total_pages != 0:
             return self.current_page / self.total_pages * 100
-
-    def dock(self):
-        self.
-
 
 @dataclass
 class Goal:
