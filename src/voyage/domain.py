@@ -9,6 +9,7 @@ class Task:
     status: str
     created_at: datetime
     completed_at: datetime | None = None
+    goal_id: int | None = None
 
     def dock(self):
         self.status = "complete"
@@ -36,12 +37,27 @@ class Book:
          
     def get_progress(self) -> float:
         """get book progress"""
-        if self.total_pages != 0:
-            return self.current_page / self.total_pages * 100
+        return self.current_page / self.total_pages * 100
+
+    def is_complete(self) -> bool:
+        return self.current_page == self.total_pages
 
 @dataclass
 class Goal:
     title: str
-    stages: list
-    deadline: datetime
-    started_at: datetime | None
+    deadline: datetime | None
+    started_at: datetime 
+
+
+    def get_progress(self, tasks: list[Task]) -> float:
+        if not tasks:
+            return 0.0
+
+        completed_tasks = 0 
+
+        for task in tasks: 
+            if task.status == "complete": 
+                completed_tasks += 1
+
+        return completed_tasks / len(tasks) * 100
+    
