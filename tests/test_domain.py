@@ -1,5 +1,6 @@
 import pytest
 from src.voyage.domain import Task, Book, Goal
+from datetime import datetime
 
 # Fixtures for common setup
 @pytest.fixture
