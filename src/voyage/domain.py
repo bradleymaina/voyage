@@ -25,7 +25,7 @@ class Book:
     total_pages: int
     current_page: int
     started_at: datetime
-    updated_at: datetime | None
+    updated_at: datetime | None = None
 
     def  update_page(self, page: int):
         if page < 0 or page > self.total_pages:
