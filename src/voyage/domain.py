@@ -20,6 +20,7 @@ class Task:
 
 @dataclass
 class Book:
+    book_id : int
     title: str
     author: str
     total_pages: int
@@ -44,6 +45,7 @@ class Book:
 
 @dataclass
 class Goal:
+    goal_id: int
     title: str
     deadline: datetime | None
     started_at: datetime 
