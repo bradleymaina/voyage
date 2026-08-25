@@ -19,3 +19,17 @@ goal_id INTEGER )
 """
 )
 
+csr.execute(
+    """
+CREATE TABLE IF NOT EXISTS books(
+book_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+title TEXT NOT NULL, 
+author TEXT NOT NULL, 
+total_pages INTEGER NOT NULL, 
+current_page INTEGER NOT NULL,
+started_at TEXT NOT NULL, 
+updated_at TEXT
+)
+"""
+)
+
