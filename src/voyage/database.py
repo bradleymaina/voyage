@@ -33,3 +33,15 @@ updated_at TEXT
 """
 )
 
+csr.execute(
+    """
+CREATE TABLE IF NOT EXISTS goals(
+goal_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+title TEXT NOT NULL,
+deadline TEXT ,
+started_at TEXT NOT NULL
+)
+"""
+)
+
+#TODO; make goal_id foreighn key in tasks
