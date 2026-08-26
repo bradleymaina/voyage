@@ -1,4 +1,5 @@
 import sqlite3
+from voyage.domain import Task, Book, Goal
 
 #database
 database = "voyage.db"
@@ -12,7 +13,7 @@ csr = db.cursor()
 csr.execute(
     """
 CREATE TABLE IF NOT EXISTS goals(
-goal_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+id INTEGER PRIMARY KEY , 
 title TEXT NOT NULL,
 deadline TEXT ,
 started_at TEXT NOT NULL
@@ -23,7 +24,7 @@ started_at TEXT NOT NULL
 csr.execute(
     """
 CREATE TABLE IF NOT EXISTS tasks(
-id INTEGER PRIMARY KEY AUTOINCREMENT, 
+id INTEGER PRIMARY KEY , 
 title TEXT NOT NULL, 
 status TEXT NOT NULL, 
 created_at TEXT NOT NULL,
@@ -36,7 +37,7 @@ FOREIGN KEY (goal_id) REFERENCES goals(goal_id))
 csr.execute(
     """
 CREATE TABLE IF NOT EXISTS books(
-book_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+id INTEGER PRIMARY KEY , 
 title TEXT NOT NULL, 
 author TEXT NOT NULL, 
 total_pages INTEGER NOT NULL, 
@@ -46,6 +47,8 @@ updated_at TEXT
 )
 """
 )
+
+def  board_task(task: Task)
 
 db.commit()
 db.close()
