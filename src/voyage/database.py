@@ -6,6 +6,16 @@ database = "voyage.db"
 db = sqlite3.connect(database)
 csr = db.cursor()
 
+csr.execute(
+    """
+CREATE TABLE IF NOT EXISTS goals(
+goal_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+title TEXT NOT NULL,
+deadline TEXT ,
+started_at TEXT NOT NULL
+)
+"""
+)
 
 csr.execute(
     """
@@ -34,15 +44,6 @@ updated_at TEXT
 """
 )
 
-csr.execute(
-    """
-CREATE TABLE IF NOT EXISTS goals(
-goal_id INTEGER PRIMARY KEY AUTOINCREMENT, 
-title TEXT NOT NULL,
-deadline TEXT ,
-started_at TEXT NOT NULL
-)
-"""
-)
+
 
 
