@@ -15,7 +15,8 @@ title TEXT NOT NULL,
 status TEXT NOT NULL, 
 created_at TEXT NOT NULL,
 completed_at TEXT  ,
-goal_id INTEGER )
+goal_id INTEGER ,
+FOREIGN KEY (goal_id) REFERENCES goals(goal_id))
 """
 )
 
@@ -44,4 +45,4 @@ started_at TEXT NOT NULL
 """
 )
 
-#TODO; make goal_id foreighn key in tasks
+
