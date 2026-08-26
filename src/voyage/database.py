@@ -4,6 +4,9 @@ import sqlite3
 database = "voyage.db"
 
 db = sqlite3.connect(database)
+
+db.execute("PRAGMA foreign_keys = ON")
+
 csr = db.cursor()
 
 csr.execute(
