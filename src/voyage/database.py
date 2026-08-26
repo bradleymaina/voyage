@@ -47,6 +47,8 @@ updated_at TEXT
 """
 )
 
+db.commit()
+db.close()
 
 
 
