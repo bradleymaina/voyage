@@ -48,7 +48,27 @@ updated_at TEXT
 """
 )
 
-def  board_task(task: Task)
+def  create_task(task: Task):
+    csr.execute(
+        """
+INSERT INTO tasks(
+title,
+status,
+created_at,
+completed_at,
+goal_id
+)
+VALUES (?, ?, ?, ?, ?)
+""",
+(
+    task.title, 
+    task.status,
+    task.created_at,
+    task.completed_at,
+    task.goal_id
+
+)
+    )
 
 db.commit()
 db.close()
