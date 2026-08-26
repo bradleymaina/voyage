@@ -30,7 +30,7 @@ status TEXT NOT NULL,
 created_at TEXT NOT NULL,
 completed_at TEXT  ,
 goal_id INTEGER ,
-FOREIGN KEY (goal_id) REFERENCES goals(goal_id))
+FOREIGN KEY (goal_id) REFERENCES goals(id))
 """
 )
 
