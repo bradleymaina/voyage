@@ -2,13 +2,24 @@ import sqlite3
 from voyage.domain import Task, Book, Goal
 
 #database
-def init_database(db: str):
-    con = sqlite3.connect(db)
-    cur = con.cursor()
+database = "voyage.db"
 
-    con.execute("PRAGMA foreign_keys=ON")  
+db = sqlite3.connect(database)
 
-    return cur    
+db.execute("PRAGMA foreign_keys = ON")
+
+csr = db.cursor()
+
+csr.execute(
+    """
+CREATE TABLE IF NOT EXISTS goals(
+id INTEGER PRIMARY KEY , 
+title TEXT NOT NULL,
+deadline TEXT ,
+started_at TEXT NOT NULL
+)
+"""
+)
 
 csr.execute(
     """
