@@ -2,6 +2,7 @@ import pytest
 from voyage.database import create_task, database
 from voyage.domain import Task
 import sqlite3
+import datetime
 
 # Create a temporary SQLite database for testing
 test_db = "test_voyage.db"
