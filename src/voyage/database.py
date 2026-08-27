@@ -1,14 +1,12 @@
 import sqlite3
 from voyage.domain import Task, Book, Goal
 
-#database
-database = "voyage.db"
+def init_db(db: str):
+    con = sqlite3.connect(db)
 
-db = sqlite3.connect(database)
+    con.execute("PRAGMA foreign_keys=ON")
 
-db.execute("PRAGMA foreign_keys = ON")
-
-csr = db.cursor()
+    return con
 
 csr.execute(
     """
