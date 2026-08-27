@@ -45,7 +45,8 @@ def init_db(db: str):
     )
     """
     )
-
+    con.commit()
+    
     return con 
 
 def  create_task(task: Task):
