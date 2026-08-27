@@ -63,12 +63,14 @@ VALUES (?, ?, ?, ?, ?)
 (
     task.title, 
     task.status,
-    task.created_at,
-    task.completed_at,
+    task.created_at.isoformat(),
+    task.completed_at.isoformat() if task.completed_at else None,
     task.goal_id
 
 )
     )
+
+    return csr.lastrowid
 
 db.commit()
 db.close()
