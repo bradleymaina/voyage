@@ -1,12 +1,12 @@
 import sqlite3
 from voyage.domain import Task, Book, Goal
 
-def init_db(db: str):
+def init_db(db: str) -> sqlite3.Connection:
     con = sqlite3.connect(db)
 
     con.execute("PRAGMA foreign_keys=ON")
 
-    cur = con.cursor()
+    cur = con.cursor() 
 
     cur.execute(
         """
@@ -49,8 +49,9 @@ def init_db(db: str):
     
     return con 
 
-def  create_task(task: Task):
-    csr.execute(
+def  create_task(con: sqlite3.Connection,  task: Task):
+    cur = con.cursor()
+    cur.execute(
         """
 INSERT INTO tasks(
 title,
@@ -71,10 +72,9 @@ VALUES (?, ?, ?, ?, ?)
 )
     )
 
-    return csr.lastrowid
+    return cur.lastrowid
 
-db.commit()
-db.close()
+
 
 
 
