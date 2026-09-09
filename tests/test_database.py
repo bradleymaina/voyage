@@ -70,6 +70,34 @@ def test_create_task_returns_id_and_saves_to_database(tmp_path):
 
     con.close()
 
+def test_create_task_accepts_empty_values_for_completed_at_and_goal_id(tmp_path):
+    db_path = tmp_path / "test.db"
+    con = init_db(str(db_path))
+    cur = con.cursor()
 
+    now = datetime.now()
+    task = Task(
+        id = None,
+        title = "test",
+        status = "complete",
+        created_at = now,
+        completed_at = None,
+        goal_id = None
+    )
+
+    task_id = create_task(con, task)
+
+    cur.execute(
+        """
+        SELECT title , status, created_at, completed_at, goal_id
+        FROM tasks
+        WHERE id = ?
+        """,
+        (task_id,),
+    )
+    saved_task = cur.fetchone()
+
+    assert saved_task is not None
+    assert saved_task == ("test", "complete", now.isoformat(), None, None)
 
 
