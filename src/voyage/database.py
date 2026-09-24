@@ -117,4 +117,4 @@ VALUES (?,?,?)
     goal.started_at.isoformat()
 )
     )
-    return cur.lastrowid()
+    return cur.lastrowid
