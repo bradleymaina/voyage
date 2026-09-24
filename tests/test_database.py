@@ -2,8 +2,8 @@
 
 import pytest
 from datetime import datetime
-from voyage.database import init_db, create_task, add_book
-from voyage.domain import Task, Book
+from voyage.database import init_db, create_task, add_book, add_goal
+from voyage.domain import Task, Book, Goal
 
 def test_init_db_creates_goal_table(tmp_path):
     db_path = tmp_path / "test.db"
@@ -133,3 +133,33 @@ def test_add_book_returns_id_and_saves_to_database_and_updated_at_accepts_null_v
 
     assert saved_book is not None
     assert saved_book == ("Computer Architecture, A Quantative Approach", "John L. Hennessy", 500, 30, now.isoformat(), now.isoformat())
+
+def test_add_goal_returns_goal_id_and_saves_to_database(tmp_path):
+    db_path = tmp_path / "test.db"
+
+    con = init_db(str(db_path))
+    cur = con.cursor()
+
+    now = datetime.now()
+
+    goal = Goal(
+        id = None, 
+        title = "Read about MVC architecture",
+        deadline = now,
+        started_at = now
+    )
+
+    goal_id = add_goal(con, goal)
+
+    cur.execute(
+        """
+        SELECT title, deadline, started_at
+        FROM goals
+        WHERE id = ?
+        """,
+        (goal_id,),
+    )
+    saved_goal = cur.fetchone()
+
+    assert saved_goal is not None
+    assert saved_goal == ("Read about MVC architecture", now.isoformat(), now.isoformat())
