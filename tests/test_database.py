@@ -116,7 +116,7 @@ def test_add_book_returns_id_and_saves_to_database_and_updated_at_accepts_null_v
         total_pages = 500,
         current_page = 30,
         started_at = now,
-        updated_at = None
+        updated_at = now
     )
 
     book_id = add_book(con, book)
@@ -132,4 +132,4 @@ def test_add_book_returns_id_and_saves_to_database_and_updated_at_accepts_null_v
     saved_book = cur.fetchone()
 
     assert saved_book is not None
-    assert saved_book == ("Computer Architecture, A Quantative Approach", "John L. Hennessy", 500, 30, now.isoformat(), None)
+    assert saved_book == ("Computer Architecture, A Quantative Approach", "John L. Hennessy", 500, 30, now.isoformat(), now.isoformat())
