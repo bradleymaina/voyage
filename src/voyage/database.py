@@ -98,3 +98,23 @@ VALUES (?, ?, ?, ?, ?, ?)
 )
     )
     return cur.lastrowid
+
+
+def add_goal(con: sqlite3.Connection, goal: Goal):
+    cur = con.cursor()
+    cur.execute(
+        """
+INSERT INTO goals(
+title, 
+deadline,
+started_at
+)
+VALUES (?,?,?)
+""",
+(
+    goal.title, 
+    goal.deadline.isoformat(),
+    goal.started_at.isoformat()
+)
+    )
+    return cur.lastrowid()
