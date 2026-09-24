@@ -84,7 +84,7 @@ author,
 total_pages,
 current_page,
 started_at,
-completed_at
+updated_at
 )
 VALUES (?, ?, ?, ?, ?, ?)
 """,
@@ -94,7 +94,7 @@ VALUES (?, ?, ?, ?, ?, ?)
     book.total_pages,
     book.current_page,
     book.started_at.isoformat(),
-    book.completed_at.isoformat() if book.completed_at else None,
+    book.updated_at.isoformat() if book.updated_at else None,
 )
     )
     return cur.lastrowid
