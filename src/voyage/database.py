@@ -74,7 +74,27 @@ VALUES (?, ?, ?, ?, ?)
 
     return cur.lastrowid
 
-
-
-
-
+def add_book(con: sqlite3.Connection, book: Book):
+    cur = con.cursor()
+    cur.execute(
+        """
+INSERT INTO books(
+title,
+author,
+total_pages,
+current_page,
+started_at,
+completed_at
+)
+VALUES (?, ?, ?, ?, ?, ?)
+""",
+(
+    book.title,
+    book.author,
+    book.total_pages,
+    book.current_page,
+    book.started_at.isoformat(),
+    book.completed_at.isoformat() if book.completed_at else None,
+)
+    )
+    return cur.lastrowid
