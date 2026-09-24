@@ -113,7 +113,7 @@ VALUES (?,?,?)
 """,
 (
     goal.title, 
-    goal.deadline.isoformat(),
+    goal.deadline.isoformat() if goal.deadline else None,
     goal.started_at.isoformat()
 )
     )
