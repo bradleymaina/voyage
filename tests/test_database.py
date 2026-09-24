@@ -2,8 +2,8 @@
 
 import pytest
 from datetime import datetime
-from voyage.database import init_db, create_task
-from voyage.domain import Task
+from voyage.database import init_db, create_task, add_book
+from voyage.domain import Task, Book
 
 def test_init_db_creates_goal_table(tmp_path):
     db_path = tmp_path / "test.db"
@@ -101,3 +101,35 @@ def test_create_task_accepts_empty_values_for_completed_at_and_goal_id(tmp_path)
     assert saved_task == ("test", "complete", now.isoformat(), None, None)
 
 
+def test_add_book_returns_id_and_saves_to_database_and_updated_at_accepts_null_values(tmp_path):
+    db_path = tmp_path / "test.db"
+
+    con = init_db(str(db_path))
+    cur = con.cursor()
+
+    now = datetime.now()
+
+    book = Book(
+        id = None,
+        title = "Computer Architecture, A Quantative Approach",
+        author = "John L. Hennessy",
+        total_pages = 500,
+        current_page = 30,
+        started_at = now,
+        updated_at = None
+    )
+
+    book_id = add_book(con, book)
+
+    cur.execute(
+        """
+        SELECT title, author, total_pages, current_page, started_at, updated_at
+        FROM books
+        WHERE id = ?
+        """,
+        (book_id,),
+    )
+    saved_book = cur.fetchone()
+
+    assert saved_book is not None
+    assert saved_book == ("Computer Architecture, A Quantative Approach", "John L. Hennessy", 500, 30, now.isoformat(), None)
