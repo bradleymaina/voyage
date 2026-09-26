@@ -163,3 +163,33 @@ def test_add_goal_returns_goal_id_and_saves_to_database(tmp_path):
 
     assert saved_goal is not None
     assert saved_goal == ("Read about MVC architecture", now.isoformat(), now.isoformat())
+
+def test_deadline_accepts_null_values(tmp_path):
+    db_path = tmp_path / "test.db"
+
+    con = init_db(str(db_path))
+    cur = con.cursor()
+
+    now = datetime.now()
+
+    goal = Goal(
+        id = None,
+        title = "Read Allan Turing Paper",
+        deadline = None,
+        started_at = now
+    )
+
+    goal_id = add_goal(con,goal)
+
+    cur.execute(
+        """
+        SELECT title, deadline, started_at
+        FROM goals
+        WHERE id = ?
+        """,
+        (goal_id,),
+    )
+    saved_goal = cur.fetchone()
+
+    assert saved_goal is not None
+    assert saved_goal == ("Read Allan Turing Paper", None, now.isoformat())
