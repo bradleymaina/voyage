@@ -1,4 +1,3 @@
-import pytest
 from datetime import datetime
 from voyage.application import board_task
 from voyage.database import init_db
