@@ -69,3 +69,16 @@ def test_board_task_with_goal(tmp_path):
 
     assert saved_task is not None
     assert saved_task == ("Fix hwcheck battery error", "boarded", created_at.isoformat(), None, goal_id)
+
+
+def test_tasks_have_unique_id(tmp_path):
+    db_path = tmp_path / "test.db"
+    con = init_db(db_path)
+    cur = con.cursor()
+
+    task = board_task(con, "test task")
+    task_1 = board_task(con, "test task2")
+    
+
+    assert task.id  != task_1.id
+
