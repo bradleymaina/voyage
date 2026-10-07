@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 @dataclass
 class Task:
-    id: int
+    id: int | None
     title: str
     status: str
     created_at: datetime
