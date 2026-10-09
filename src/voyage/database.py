@@ -1,5 +1,6 @@
 import sqlite3
 from voyage.domain import Task, Book, Goal
+from datetime import datetime
 
 def init_db(db: str) -> sqlite3.Connection:
     con = sqlite3.connect(db)
@@ -73,6 +74,32 @@ VALUES (?, ?, ?, ?, ?)
     )
 
     return cur.lastrowid
+
+def get_task(con: sqlite3.Connection, task_id: int) -> Task | None:
+    cur = con.cursor()
+    cur.execute(
+        """
+        SELECT * FROM tasks
+        WHERE id=?
+        """,
+        (task_id,)
+    )
+
+    selected_task = cur.fetchone()
+
+    if selected_task is None :
+        return None
+    else:
+
+        task = Task(
+            id = selected_task[0],
+            title = selected_task[1],
+            status = selected_task[2],
+            created_at = datetime.fromisoformat(selected_task[3]),
+            completed_at = datetime.fromisoformat(selected_task[4]) if selected_task[4] else None,
+            goal_id = selected_task[5] 
+        )
+    return task
 
 def add_book(con: sqlite3.Connection, book: Book):
     cur = con.cursor()
