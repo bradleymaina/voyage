@@ -2,7 +2,7 @@
 
 import pytest
 from datetime import datetime
-from voyage.database import init_db, create_task, add_book, add_goal
+from voyage.database import init_db, create_task, add_book, add_goal, get_task
 from voyage.domain import Task, Book, Goal
 
 def test_init_db_creates_goal_table(tmp_path):
@@ -100,6 +100,35 @@ def test_create_task_accepts_empty_values_for_completed_at_and_goal_id(tmp_path)
     assert saved_task is not None
     assert saved_task == ("test", "complete", now.isoformat(), None, None)
 
+def test_get_task_gets_a_task_from_database(tmp_path):
+    db_path = tmp_path / "test.db"
+    con = init_db(str(db_path))
+
+    now = datetime.now()
+    task = Task(
+        id = None,
+        title = "test",
+        status = "complete",
+        created_at = now,
+        completed_at = None,
+        goal_id = None
+    )
+
+    task_id = create_task(con, task)
+    fetched_task = get_task(con, task_id)
+
+    expected_task = Task(
+        id = task_id,
+        title = "test",
+        status = "complete",
+        created_at = now,
+        completed_at = None,
+        goal_id = None
+    )
+
+    assert fetched_task == expected_task
+
+ 
 
 def test_add_book_returns_id_and_saves_to_database_and_updated_at_accepts_null_values(tmp_path):
     db_path = tmp_path / "test.db"
