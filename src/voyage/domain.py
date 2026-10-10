@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 @dataclass
 class Task:
-    id: int | None
+    id: int | Nonet
     title: str
     status: str
     created_at: datetime
@@ -12,7 +12,7 @@ class Task:
     goal_id: int | None = None
 
     def dock(self):
-        self.status = "complete"
+        self.status = "docked"
         self.completed_at = datetime.now()
 
     def maroon(self):
