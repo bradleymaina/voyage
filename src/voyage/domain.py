@@ -16,7 +16,7 @@ class Task:
         self.completed_at = datetime.now()
 
     def maroon(self):
-        self.status = "maroon"
+        self.status = "marooned"
 
 @dataclass
 class Book:
