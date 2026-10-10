@@ -101,6 +101,20 @@ def get_task(con: sqlite3.Connection, task_id: int) -> Task | None:
         )
     return task
 
+def update_task(con: sqlite3.Connection, task: Task):
+    cur = con.cursor()
+    cur.execute(
+        """
+        UPDATE tasks
+        SET status = ?,
+            completed_at = ?
+        WHERE
+          id = ? ;
+        """, 
+        (task.status, task.completed_at.isoformat(), task.id) #TODO: Use SET to avoid writing  another function for renaming task
+    )
+
+
 def add_book(con: sqlite3.Connection, book: Book):
     cur = con.cursor()
     cur.execute(
