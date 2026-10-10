@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 @dataclass
 class Task:
-    id: int | Nonet
+    id: int | None
     title: str
     status: str
     created_at: datetime
@@ -58,7 +58,7 @@ class Goal:
         completed_tasks = 0 
 
         for task in tasks: 
-            if task.status == "complete": 
+            if task.status == "docked": 
                 completed_tasks += 1
 
         return completed_tasks / len(tasks) * 100
