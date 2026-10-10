@@ -40,7 +40,7 @@ def test_task_dock(task):
     task.dock()
     
     # Then
-    assert task.status == "complete"
+    assert task.status == "docked"
     assert task.completed_at is not None
 
 def test_task_maroon(task):
@@ -105,7 +105,7 @@ def test_goal_get_progress(goal):
         Task(
             id=1,
             title="Task 1",
-            status="complete",
+            status="docked",
             created_at=datetime.now(),
             goal_id=None
         ),
