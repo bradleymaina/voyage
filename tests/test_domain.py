@@ -51,7 +51,7 @@ def test_task_maroon(task):
     task.maroon()
     
     # Then
-    assert task.status == "maroon"
+    assert task.status == "marooned"
 
 # Test cases for Book class
 def test_book_update_page(book):
