@@ -1,5 +1,5 @@
 from datetime import datetime
-from voyage.application import board_task, dock_task
+from voyage.application import board_task, dock_task, stow_book
 from voyage.database import init_db, get_task,update_task
 import pytest
 
@@ -141,3 +141,37 @@ def test_dock_task_raises_for_a_marooned_task(tmp_path):
     assert saved_task.status == "marooned"
 
     con.close()
+
+def test_stow_book_adds_book_and_saves_to_database(tmp_path):
+    db_path = tmp_path / "test.db"
+    con = init_db(str(db_path))
+    cur = con.cursor()
+
+    book = stow_book(con, "test book", "John Doe", 500)
+    started_at = book.started_at
+
+    assert book.id is not None
+    assert book.title == "test book"
+    assert book.author == "John Doe"
+    assert book.total_pages == 500
+    assert book.current_page == 0
+    assert book.updated_at is None
+
+
+    cur.execute(
+        """
+        SELECT title , author, total_pages, current_page,  started_at, updated_at
+        FROM books
+        WHERE id = ?
+        """,
+        (book.id,),
+    )
+
+    saved_book = cur.fetchone()
+
+    assert saved_book is not None
+    assert saved_book == ("test book", "John Doe", 500, 0, started_at.isoformat(), None)
+
+    con.close()
+
+    #TODO:  test does not prove con.commit runs
