@@ -103,6 +103,7 @@ def get_task(con: sqlite3.Connection, task_id: int) -> Task | None:
 
 def update_task(con: sqlite3.Connection, task: Task):
     cur = con.cursor()
+    
     cur.execute(
         """
         UPDATE tasks
@@ -111,7 +112,7 @@ def update_task(con: sqlite3.Connection, task: Task):
         WHERE
           id = ? ;
         """, 
-        (task.status, task.completed_at.isoformat(), task.id) #TODO: Use SET to avoid writing  another function for renaming task
+        (task.status, task.completed_at.isoformat() if task.completed_at else None, task.id) #TODO: Use SET to avoid writing  another function for renaming task
     )
 
 
