@@ -105,4 +105,21 @@ def test_dock_task_raises_when_task_not_found(tmp_path):
 
     con.close()
 
+def test_dock_task_raises_for_already_docked_task(tmp_path):
+    db_path = tmp_path / "test.db"
+    con = init_db(str(db_path))
+
+    task = board_task(con, "test task")
+    returned_task = dock_task(con, task.id)
+    first_completed_at = returned_task.completed_at
+
+
+    with pytest.raises(ValueError, match="docked"):
+       dock_task(con, task.id)
+
+    saved_task = get_task(con, task.id)
+
+    assert first_completed_at == saved_task.completed_at
+
+    con.close()
     
