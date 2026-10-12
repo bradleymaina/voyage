@@ -1,6 +1,8 @@
 from datetime import datetime
 from voyage.application import board_task, dock_task
 from voyage.database import init_db, get_task
+import pytest
+
 
 
 def test_board_task_with_no_goal(tmp_path):
@@ -93,3 +95,14 @@ def test_dock_task_docks_task_and_saves_it(tmp_path):
     assert saved_task.status == "docked"
     assert saved_task.completed_at  == returned_task.completed_at
     con.close()
+ 
+def test_dock_task_raises_when_task_not_found(tmp_path):
+    db_path = tmp_path  / "test.db"
+    con = init_db(str(db_path))
+
+    with pytest.raises(ValueError, match="not found"):
+        dock_task(con, 500)
+
+    con.close()
+
+    
