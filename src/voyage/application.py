@@ -1,6 +1,6 @@
 import sqlite3
-from voyage.domain import Task
-from voyage.database import create_task , get_task, update_task
+from voyage.domain import Task, Book
+from voyage.database import create_task , get_task, update_task, add_book
 from datetime import datetime
 
 def board_task(con: sqlite3.Connection, title: str , goal_id: int | None =  None) -> Task:
@@ -40,3 +40,25 @@ def dock_task(con: sqlite3.Connection, task_id: int):
     con.commit()
 
     return fetched_task
+
+def stow_book(con : sqlite3.Connection, title: str, author: str, total_pages: int ):
+    """Add a new book"""
+    now = datetime.now()
+
+    book = Book(
+        id = None,
+        title = title,
+        author = author,
+        total_pages = total_pages,
+        current_page = 0, 
+        started_at = now, 
+        updated_at = None,
+    )
+
+    if book.total_pages > 0:
+        raise ValueError("Book cannot have negative pages!")
+
+    book.id = add_book(con, book)
+    con.commit()
+
+    return book
