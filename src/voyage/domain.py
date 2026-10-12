@@ -20,7 +20,7 @@ class Task:
 
 @dataclass
 class Book:
-    id : int
+    id : int | None
     title: str
     author: str
     total_pages: int
