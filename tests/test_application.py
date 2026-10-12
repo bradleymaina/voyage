@@ -1,6 +1,6 @@
 from datetime import datetime
-from voyage.application import board_task
-from voyage.database import init_db
+from voyage.application import board_task, dock_task
+from voyage.database import init_db, get_task
 
 
 def test_board_task_with_no_goal(tmp_path):
@@ -81,3 +81,15 @@ def test_tasks_have_unique_id(tmp_path):
 
     assert task.id  != task_1.id
 
+def test_dock_task_docks_task_and_saves_it(tmp_path):
+    db_path = tmp_path / "test.db"
+    con = init_db(str(db_path))
+
+    task = board_task(con, "test task")
+    returned_task = dock_task(con, task.id)
+    saved_task = get_task(con, task.id)
+
+    assert saved_task.completed_at is not None
+    assert saved_task.status == "docked"
+    assert saved_task.completed_at  == returned_task.completed_at
+    con.close()
