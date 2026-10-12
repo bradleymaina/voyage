@@ -55,7 +55,7 @@ def stow_book(con : sqlite3.Connection, title: str, author: str, total_pages: in
         updated_at = None,
     )
 
-    if book.total_pages > 0:
+    if book.total_pages < 0:
         raise ValueError("Book cannot have negative pages!")
 
     book.id = add_book(con, book)
