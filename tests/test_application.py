@@ -1,6 +1,6 @@
 from datetime import datetime
 from voyage.application import board_task, dock_task
-from voyage.database import init_db, get_task
+from voyage.database import init_db, get_task,update_task
 import pytest
 
 
@@ -123,3 +123,21 @@ def test_dock_task_raises_for_already_docked_task(tmp_path):
 
     con.close()
     
+def test_dock_task_raises_for_a_marooned_task(tmp_path):
+    db_path = tmp_path  / "test.db"
+    con = init_db(str(db_path))
+
+    returned_task = board_task(con, "test task")
+    returned_task.maroon()
+    update_task(con, returned_task)
+    con.commit()
+
+    with pytest.raises(ValueError, match="marooned"):
+        dock_task(con, returned_task.id)
+
+    saved_task = get_task(con, returned_task.id)
+
+    assert saved_task.completed_at is None
+    assert saved_task.status == "marooned"
+
+    con.close()
