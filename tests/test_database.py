@@ -2,7 +2,7 @@
 
 import pytest
 from datetime import datetime
-from voyage.database import init_db, create_task, add_book, add_goal, get_task, update_task
+from voyage.database import init_db, create_task, add_book, add_goal, get_task, update_task, get_book
 from voyage.domain import Task, Book, Goal
 
 def test_init_db_creates_goal_table(tmp_path):
@@ -194,6 +194,39 @@ def test_add_book_returns_id_and_saves_to_database_and_updated_at_accepts_null_v
 
     assert saved_book is not None
     assert saved_book == ("Computer Architecture, A Quantative Approach", "John L. Hennessy", 500, 30, now.isoformat(), now.isoformat())
+
+def test_get_book_fetches_book_from_database_and_updates_it(tmp_path):
+    db_path = tmp_path / "test.db"
+    con = init_db(str(db_path))
+
+    now = datetime.now()
+    book = Book(
+        id = None, 
+        title = "test book",
+        author = "John Doe",
+        total_pages = 500,
+        current_page = 0,
+        started_at = now,
+        updated_at = None
+    )
+
+    book_id = add_book(con, book)
+    fetched_book = get_book(con, book_id)
+
+    expected_book = Book(
+        id = book_id,
+        title = "test book",
+        author = "John Doe",
+        total_pages = 500,
+        current_page = 0,
+        started_at = now, 
+        updated_at = None
+        
+    )
+
+    assert fetched_book == expected_book 
+
+
 
 def test_add_goal_returns_goal_id_and_saves_to_database(tmp_path):
     db_path = tmp_path / "test.db"
