@@ -164,10 +164,9 @@ def get_book(con: sqlite3.Connection, book_id: int) -> Book:
             author = fetched_book[2],
             total_pages = fetched_book[3],
             current_page = fetched_book[4],
-            started_at = fetched_book[5],
-            updated_at = fetched_book[6]
+            started_at = datetime.fromisoformat(fetched_book[5]),
+            updated_at =datetime.fromisoformat( fetched_book[6]) if fetched_book[6] else None
         )
-
     return book
 
 
