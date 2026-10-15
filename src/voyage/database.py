@@ -141,6 +141,35 @@ VALUES (?, ?, ?, ?, ?, ?)
     )
     return cur.lastrowid
 
+def get_book(con: sqlite3.Connection, book_id: int) -> Book:
+    """Select a book by id from a database"""
+    cur = con.cursor()
+    cur.execute(
+        """
+        SELECT *
+        FROM books
+        WHERE id = ?
+        """,
+        (book_id,),
+    )
+
+    fetched_book = cur.fetchone()
+
+    if fetched_book is None:
+        return None
+    else:
+        book = Book(
+            id = fetched_book[0],
+            title = fetched_book[1],
+            author = fetched_book[2],
+            total_pages = fetched_book[3],
+            current_page = fetched_book[4],
+            started_at = fetched_book[5],
+            updated_at = fetched_book[6]
+        )
+
+    return book
+
 
 def add_goal(con: sqlite3.Connection, goal: Goal):
     cur = con.cursor()
