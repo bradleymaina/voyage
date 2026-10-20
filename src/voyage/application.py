@@ -1,6 +1,6 @@
 import sqlite3
 from voyage.domain import Task, Book
-from voyage.database import create_task , get_task, update_task, add_book
+from voyage.database import create_task , get_task, update_task, add_book, get_book, update_book
 from datetime import datetime
 
 def board_task(con: sqlite3.Connection, title: str , goal_id: int | None =  None) -> Task:
@@ -62,3 +62,17 @@ def stow_book(con : sqlite3.Connection, title: str, author: str, total_pages: in
     con.commit()
 
     return book
+
+def log_book(con: sqlite3.Connection, book_id: int, current_page: int):
+    """Update a book """
+    fetched_book = get_book(con, book_id)
+
+    if fetched_book is None:
+        raise ValueError(f"Book {book_id} does not exist!")
+    
+
+    fetched_book.update_page(current_page)
+    update_book(con, fetched_book)
+    con.commit()
+
+    return fetched_book
