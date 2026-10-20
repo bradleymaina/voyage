@@ -169,6 +169,22 @@ def get_book(con: sqlite3.Connection, book_id: int) -> Book:
         )
     return book
 
+def update_book(con: sqlite3.Connection  , book: Book):
+    """Take a fetched book and update the page"""
+    cur = con.cursor()
+
+    cur.execute(
+        """
+        UPDATE books
+        SET current_page = ?,
+            updated_at = ?
+        WHERE 
+            id = ?;
+        """,
+        (book.current_page, book.updated_at.isoformat() if book.updated_at else None, book.id)
+    )
+
+
 
 def add_goal(con: sqlite3.Connection, goal: Goal):
     cur = con.cursor()
