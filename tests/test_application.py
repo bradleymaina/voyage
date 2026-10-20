@@ -1,6 +1,7 @@
 from datetime import datetime
 from voyage.application import board_task, dock_task, stow_book, log_book
-from voyage.database import init_db, get_task,update_task
+from voyage.database import init_db, get_task,update_task, add_book
+from voyage.domain import Book
 import pytest
 
 
@@ -183,3 +184,26 @@ def test_log_book_raises_when_book_is_not_in_database(tmp_path):
 
     with pytest.raises(ValueError, match="does not exist"):
         log_book(con, 999, 54)
+
+def test_log_book_updates_page_and_updated_at(tmp_path):
+    db_path = tmp_path / "test.db"
+    con = init_db(str(db_path))
+
+    now = datetime.now()
+
+    book = Book(
+        id = None, 
+        title = "test book",
+        author = "John Doe",
+        total_pages = 500,
+        current_page = 5, 
+        started_at = now,
+        updated_at = None
+    )
+
+    book_id = add_book(con, book)
+    updated_book = log_book(con, book_id, 64)
+
+    assert updated_book.current_page == 64
+    assert updated_book.updated_at is not None 
+
