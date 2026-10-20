@@ -1,5 +1,5 @@
 from datetime import datetime
-from voyage.application import board_task, dock_task, stow_book
+from voyage.application import board_task, dock_task, stow_book, log_book
 from voyage.database import init_db, get_task,update_task
 import pytest
 
@@ -175,3 +175,11 @@ def test_stow_book_adds_book_and_saves_to_database(tmp_path):
     con.close()
 
     #TODO:  test does not prove con.commit runs
+
+def test_log_book_raises_when_book_is_not_in_database(tmp_path):
+    db_path = tmp_path / "test.db"
+    con = init_db(str(db_path))
+
+
+    with pytest.raises(ValueError, match="does not exist"):
+        log_book(con, 999, 54)
