@@ -207,3 +207,24 @@ def test_log_book_updates_page_and_updated_at(tmp_path):
     assert updated_book.current_page == 64
     assert updated_book.updated_at is not None 
 
+def test_log_book_raises_for_invalid_page(tmp_path):
+    db_path = tmp_path / "test.db"
+    con = init_db(str(db_path))
+
+    now = datetime.now()
+
+    book = Book(
+        id = None,
+        title = "test book",
+        author = "John Doe",
+        total_pages = 500,
+        current_page = 30, 
+        started_at  = now, 
+        updated_at = None
+    )
+
+    book_id = add_book(con, book)
+
+    with pytest.raises(ValueError , match="Invalid"):
+        log_book(con, book_id, 800)
+
