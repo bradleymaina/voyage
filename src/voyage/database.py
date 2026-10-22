@@ -173,6 +173,9 @@ def update_book(con: sqlite3.Connection  , book: Book):
     """Take a fetched book and update the page"""
     cur = con.cursor()
 
+    if book.current_page > book.total_pages:
+        raise ValueError("Invalid page!")
+
     cur.execute(
         """
         UPDATE books
