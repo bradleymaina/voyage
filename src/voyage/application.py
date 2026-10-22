@@ -1,6 +1,6 @@
 import sqlite3
-from voyage.domain import Task, Book
-from voyage.database import create_task , get_task, update_task, add_book, get_book, update_book
+from voyage.domain import Task, Book, Goal
+from voyage.database import create_task , get_task, update_task, add_book, get_book, update_book, add_goal
 from datetime import datetime
 
 def board_task(con: sqlite3.Connection, title: str , goal_id: int | None =  None) -> Task:
@@ -76,3 +76,18 @@ def log_book(con: sqlite3.Connection, book_id: int, current_page: int):
     con.commit()
 
     return fetched_book
+
+def set_course(con: sqlite3.Connection, title: str) -> Goal:
+    """Add a new goal"""
+    now = datetime.now()
+    goal = Goal(
+        id = None,
+        title = title,
+        deadline = None,
+        started_at = now
+    )
+
+    goal.id = add_goal(con, goal)
+    con.commit()
+
+    return goal
