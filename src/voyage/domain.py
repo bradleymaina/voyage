@@ -45,7 +45,7 @@ class Book:
 
 @dataclass
 class Goal:
-    id: int
+    id: int | None
     title: str
     deadline: datetime | None
     started_at: datetime 
