@@ -1,5 +1,5 @@
 from datetime import datetime
-from voyage.application import board_task, dock_task, stow_book, log_book
+from voyage.application import board_task, dock_task, stow_book, log_book, set_course
 from voyage.database import init_db, get_task,update_task, add_book
 from voyage.domain import Book
 import pytest
@@ -227,4 +227,14 @@ def test_log_book_raises_for_invalid_page(tmp_path):
 
     with pytest.raises(ValueError , match="Invalid"):
         log_book(con, book_id, 800)
+
+def test_set_course_adds_goal_with_id_to_the_database(tmp_path):
+    db_path = tmp_path / "test.db"
+    con = init_db(str(db_path))
+
+    goal = set_course(con, "Master Quant Finance")
+
+    assert goal.id is not None
+    assert  goal.title == "Master Quant Finance"
+    assert goal.started_at is not None
 
