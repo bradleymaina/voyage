@@ -231,10 +231,22 @@ def test_log_book_raises_for_invalid_page(tmp_path):
 def test_set_course_adds_goal_with_id_to_the_database(tmp_path):
     db_path = tmp_path / "test.db"
     con = init_db(str(db_path))
+    cur = con.cursor()
 
     goal = set_course(con, "Master Quant Finance")
 
     assert goal.id is not None
-    assert  goal.title == "Master Quant Finance"
-    assert goal.started_at is not None
+
+    cur.execute(
+        """
+        SELECT *
+        FROM goals
+        WHERE id=?
+        """,
+        (goal.id, )
+    )
+
+    fetched_goal = cur.fetchone()
+
+    assert fetched_goal == (goal.id, "Master Quant Finance", None, goal.started_at.isoformat())
 
