@@ -250,3 +250,37 @@ def test_set_course_adds_goal_with_id_to_the_database(tmp_path):
 
     assert fetched_goal == (goal.id, "Master Quant Finance", None, goal.started_at.isoformat())
 
+def test_relationship_between_goal_and_task(tmp_path):
+    db_path = tmp_path / "test.db"
+    con = init_db(str(db_path))
+    cur = con.cursor()
+
+
+    goal = set_course(con, "Learn Docker Logs")
+
+    assert goal.id is not None
+
+    cur.execute(
+        """
+        SELECT *
+        FROM goals
+        WHERE id=?
+        """,
+        (goal.id,),
+    )
+
+    fetched_goal = cur.fetchone()
+
+    cur.execute(
+        """
+        SELECT *
+        FROM tasks
+        WHERE id=?
+        """,
+        (goal.id,),
+    )
+
+    fetched_task = cur.fetchone()
+
+    fetched_goal == fetched_task
+
