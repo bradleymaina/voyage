@@ -87,6 +87,9 @@ def set_course(con: sqlite3.Connection, title: str) -> Goal:
         started_at = now
     )
 
+    if goal.title is None: 
+        raise ValueError("Cannot add Goal  without title!")
+
     goal.id = add_goal(con, goal)
     con.commit()
 
